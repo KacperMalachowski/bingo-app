@@ -1,7 +1,7 @@
 {
-  "name": "Bingo Game",
-  "short_name": "Bingo",
-  "description": "A modern, interactive bingo game with local storage",
+  "name": "Meeting Fun Bingo",
+  "short_name": "Meeting Bingo",
+  "description": "A modern, interactive meeting bingo game - click phrases when they happen",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#667eea",

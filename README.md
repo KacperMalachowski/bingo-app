@@ -1,26 +1,34 @@
-# 🎯 Bingo Game
+# 🎯 Meeting Fun Bingo
 
-A modern, interactive bingo game built with HTML, CSS, and JavaScript. Play bingo in your browser with automatic number calling, local storage for game persistence, and beautiful responsive design.
+A modern, interactive meeting bingo game built with HTML, CSS, and JavaScript. Perfect for virtual meetings, conferences, or any group events. Click phrases directly on your bingo card when they happen!
 
 ## ✨ Features
 
-- **Interactive 5×5 Bingo Board**: Classic bingo gameplay with B-I-N-G-O columns
-- **Automatic Number Calling**: Random number generation following standard bingo rules
-- **Smart Cell Marking**: Automatically marks called numbers on your card
+- **Interactive 5×5 Bingo Board**: Click phrases directly when they happen during your meeting
+- **Meeting-Optimized Gameplay**: No need to "call" numbers - just click when you hear/see phrases
+- **Smart Phrase Management**: Exactly 24 custom phrases plus FREE center square
+- **Multiple Themed Presets**: Ready-to-use phrase sets for different scenarios
 - **Win Detection**: Automatic detection of winning patterns (rows, columns, diagonals)
 - **Local Storage**: Game state and statistics are saved locally
 - **Game Statistics**: Track games played, games won, and win rate
 - **Responsive Design**: Works perfectly on desktop and mobile devices
-- **Modern UI**: Beautiful gradient design with smooth animations
+- **Modern UI**: Beautiful gradient design optimized for meeting environments
 
 ## 🎮 How to Play
 
-1. Click **"New Game"** to start a fresh bingo game
-2. Click **"Call Number"** to draw a random number
-3. Numbers on your card that match called numbers are automatically marked
-4. You can also manually click cells to mark them (only if the number has been called)
-5. Get 5 in a row (horizontally, vertically, or diagonally) to win!
-6. The center square is always marked as "FREE"
+1. Click **"New Game"** to start a fresh bingo card with 24 random phrases
+2. **During your meeting/event**: Click phrases on the bingo card when they happen
+3. **Get 5 in a row** (horizontally, vertically, or diagonally) to win!
+4. The center square is always marked as "FREE"
+5. Click **"Customize Phrases"** to create your own themed bingo cards
+
+## 🎯 Perfect For
+
+- **Virtual Meetings**: Make boring meetings fun with meeting-specific phrases
+- **Conferences**: Create engagement during presentations
+- **Movie Nights**: Use movie bingo preset for film watching parties
+- **Online Classes**: Educational bingo for student engagement
+- **Team Building**: Custom phrases for your organization's culture
 
 ## 🚀 GitHub Pages Deployment
 
@@ -37,10 +45,27 @@ Your game will be available at: `https://yourusername.github.io/bingo-app/`
 ## 💾 Data Storage
 
 The game uses localStorage to persist:
-- **Game State**: Current game progress, called numbers, and card state
+- **Game State**: Current game progress and marked phrases
+- **Custom Phrases**: Your personalized phrase sets (exactly 24 phrases)
 - **Statistics**: Total games played, games won, and win rate
 - **Auto-Save**: Game state is automatically saved during gameplay
 - **Auto-Load**: Previous game state is restored when you return
+
+## 🎨 Preset Themes
+
+Choose from ready-made phrase sets:
+
+- **Meeting Bingo**: Classic virtual meeting phrases and situations
+- **Work From Home**: Remote work scenarios and distractions  
+- **Movie Night**: Common movie-watching experiences
+- **Online Learning**: Educational and classroom scenarios
+
+## 🛠️ Customization
+
+- **Exactly 24 Phrases**: Create your perfect bingo card with precisely the right number of phrases
+- **Easy Editing**: Simple textarea interface for adding custom phrases
+- **Instant Validation**: Real-time feedback on phrase count
+- **Multiple Presets**: Quick-load common scenarios or start from scratch
 
 ## 🛠️ Technologies Used
 
@@ -57,13 +82,12 @@ The game uses localStorage to persist:
 - Edge
 - Mobile browsers
 
-## 🎨 Customization
+## 🎯 Usage Ideas
 
-You can easily customize the game by modifying:
-- **Colors**: Update the CSS gradient variables
-- **Fonts**: Change the Google Fonts import
-- **Game Rules**: Modify the JavaScript logic for different winning patterns
-- **Card Size**: Adjust the grid size in both CSS and JavaScript
+- **Corporate Meetings**: "Someone says 'synergy'", "Audio feedback occurs"
+- **Gaming Sessions**: "Someone rage quits", "Controller thrown"
+- **Family Gatherings**: "Someone asks about relationship status", "Food gets spilled"
+- **Sports Events**: "Referee makes bad call", "Commentator repeats same stat"
 
 ## 📄 License
 
