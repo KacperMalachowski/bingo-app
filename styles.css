@@ -23,7 +23,7 @@ header {
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     font-weight: 700;
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -130,23 +130,24 @@ header h1 {
 
 .current-number {
     background: white;
-    width: 200px;
-    height: 120px;
+    width: min(90vw, 300px);
+    min-height: 80px;
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: clamp(0.75rem, 2.2vw, 1.1rem);
     font-weight: 600;
     margin: 0 auto 10px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     color: #667eea;
     border: 4px solid rgba(255, 255, 255, 0.3);
-    padding: 10px;
+    padding: 12px;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.25;
     overflow: hidden;
     word-wrap: break-word;
+    hyphens: auto;
 }
 
 .called-number-display p {
@@ -195,18 +196,20 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: clamp(0.55rem, 1.8vw, 0.8rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
-    padding: 5px;
+    padding: 3px;
     text-align: center;
-    line-height: 1.2;
+    line-height: 1.05;
     overflow: hidden;
     word-wrap: break-word;
+    word-break: break-word;
     hyphens: auto;
     position: relative;
+    min-height: 0;
 }
 
 .bingo-cell:not(.marked):not(.free):hover {
@@ -462,61 +465,515 @@ header h1 {
     opacity: 1;
 }
 
-@media (max-width: 768px) {
+/* Mobile Phones - Extra Small */
+@media (max-width: 360px) {
+    .container {
+        padding: 8px;
+    }
+
+    header h1 {
+        font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+        margin-bottom: 12px;
+    }
+
+    .game-stats {
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .stat {
+        padding: 6px 10px;
+        min-width: 70px;
+        width: 100%;
+        max-width: 160px;
+    }
+
+    .stat-label {
+        font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+    }
+
+    .stat span:last-child {
+        font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .btn {
+        padding: 8px 14px;
+        font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+        width: 100%;
+        max-width: 160px;
+        letter-spacing: 0.5px;
+    }
+
+    .current-number {
+        width: min(96vw, 260px);
+        min-height: 60px;
+        font-size: clamp(0.65rem, 1.9vw, 0.8rem);
+        padding: 8px;
+        line-height: 1.2;
+    }
+
+    .bingo-card {
+        padding: 6px;
+        margin: 0 auto 12px;
+    }
+
+    .card-grid {
+        gap: 3px;
+    }
+
+    .letter {
+        padding: 4px;
+        font-size: clamp(0.8rem, 2.2vw, 1rem);
+    }
+
+    .bingo-cell {
+        font-size: clamp(0.4rem, 1.3vw, 0.55rem);
+        padding: 1px;
+        border-radius: 3px;
+        line-height: 0.95;
+        border-width: 1px;
+    }
+
+    .bingo-cell:not(.marked):not(.free)::after {
+        font-size: clamp(0.4rem, 1.2vw, 0.5rem);
+        top: 1px;
+        right: 1px;
+    }
+
+    .called-numbers {
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    .called-numbers h3 {
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        margin-bottom: 8px;
+    }
+
+    .called-number {
+        font-size: clamp(0.6rem, 1.6vw, 0.7rem);
+        padding: 4px 6px;
+        margin: 2px;
+    }
+
+    .modal-content {
+        margin: 5% auto;
+        padding: 12px;
+        width: 98%;
+    }
+
+    .modal-content h2 {
+        font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+    }
+
+    .modal-content p {
+        font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+    }
+
+    #customPhrasesTextarea {
+        height: 150px;
+        font-size: clamp(0.75rem, 2vw, 0.85rem);
+        padding: 6px;
+    }
+
+    .btn-preset {
+        font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+        padding: 4px 8px;
+        margin: 2px;
+    }
+
+    .toast {
+        font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+        padding: 6px 10px;
+        max-width: 200px;
+        right: 5px;
+        bottom: 5px;
+    }
+}
+
+/* Mobile Phones - Small */
+@media (min-width: 361px) and (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: clamp(1.6rem, 4.8vw, 2.2rem);
+        margin-bottom: 15px;
+    }
+
+    .game-stats {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .stat {
+        padding: 8px 12px;
+        min-width: 80px;
+        width: 100%;
+        max-width: 180px;
+    }
+
+    .stat-label {
+        font-size: clamp(0.75rem, 2vw, 0.85rem);
+    }
+
+    .stat span:last-child {
+        font-size: clamp(1.1rem, 3vw, 1.25rem);
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        font-size: clamp(0.8rem, 2.3vw, 0.9rem);
+        width: 100%;
+        max-width: 180px;
+        letter-spacing: 0.5px;
+    }
+
+    .current-number {
+        width: min(94vw, 280px);
+        min-height: 70px;
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
+        padding: 10px;
+        line-height: 1.25;
+    }
+
+    .bingo-card {
+        padding: 8px;
+        margin: 0 auto 16px;
+    }
+
+    .card-grid {
+        gap: 4px;
+    }
+
+    .letter {
+        padding: 6px;
+        font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+    }
+
+    .bingo-cell {
+        font-size: clamp(0.48rem, 1.65vw, 0.65rem);
+        padding: 2px;
+        border-radius: 5px;
+        line-height: 1.05;
+        border-width: 1.5px;
+    }
+
+    .bingo-cell:not(.marked):not(.free)::after {
+        font-size: clamp(0.45rem, 1.4vw, 0.6rem);
+        top: 1px;
+        right: 1px;
+    }
+
+    .called-numbers {
+        padding: 10px;
+        margin-top: 12px;
+    }
+
+    .called-numbers h3 {
+        font-size: clamp(1rem, 2.6vw, 1.15rem);
+        margin-bottom: 8px;
+    }
+
+    .called-number {
+        font-size: clamp(0.65rem, 1.75vw, 0.75rem);
+        padding: 5px 8px;
+        margin: 2px;
+    }
+
+    .modal-content {
+        margin: 8% auto;
+        padding: 14px;
+        width: 96%;
+    }
+
+    .modal-content h2 {
+        font-size: clamp(1.4rem, 3.8vw, 1.7rem);
+    }
+
+    .modal-content p {
+        font-size: clamp(0.85rem, 2.3vw, 0.95rem);
+    }
+
+    .custom-modal-content {
+        max-height: 90vh;
+    }
+
+    #customPhrasesTextarea {
+        height: 160px;
+        font-size: clamp(0.8rem, 2.1vw, 0.9rem);
+        padding: 8px;
+    }
+
+    .custom-modal-buttons {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .btn-preset {
+        font-size: clamp(0.75rem, 1.9vw, 0.82rem);
+        padding: 5px 10px;
+        margin: 2px;
+    }
+
+    .toast {
+        font-size: clamp(0.75rem, 1.9vw, 0.85rem);
+        padding: 8px 12px;
+        max-width: 220px;
+        right: 8px;
+        bottom: 8px;
+    }
+}
+
+    .btn {
+        padding: 12px 20px;
+        font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .current-number {
+        width: min(92vw, 290px);
+        min-height: 75px;
+        font-size: clamp(0.75rem, 2.2vw, 1rem);
+        padding: 12px;
+    }
+
+    .bingo-card {
+        padding: 10px;
+        margin: 0 auto 20px;
+    }
+
+    .card-grid {
+        gap: 5px;
+    }
+
+    .letter {
+        padding: 8px;
+        font-size: clamp(1rem, 3vw, 1.25rem);
+    }
+
+    .bingo-cell {
+        font-size: clamp(0.5rem, 1.8vw, 0.7rem);
+        padding: 2px;
+        border-radius: 6px;
+        line-height: 1.1;
+    }
+
+    .called-numbers {
+        padding: 12px;
+        margin-top: 15px;
+    }
+
+    .called-numbers h3 {
+        font-size: clamp(1rem, 2.8vw, 1.2rem);
+        margin-bottom: 10px;
+    }
+
+    .called-number {
+        font-size: clamp(0.65rem, 1.8vw, 0.75rem);
+        padding: 5px 8px;
+    }
+
+    .modal-content {
+        margin: 8% auto;
+        padding: 16px;
+        width: 96%;
+    }
+
+    .modal-content h2 {
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
+    }
+
+    .modal-content p {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+    }
+
+    .custom-modal-content {
+        max-height: 92vh;
+    }
+
+    #customPhrasesTextarea {
+        height: 180px;
+        font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+        padding: 8px;
+    }
+
+    .custom-modal-buttons {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .btn-preset {
+        font-size: clamp(0.75rem, 2vw, 0.85rem);
+        padding: 5px 10px;
+    }
+
+    .toast {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 8px 12px;
+        max-width: 250px;
+        right: 8px;
+        top: 8px;
+    }
+}
+
+/* Tablets and Large Mobile */
+@media (min-width: 481px) and (max-width: 768px) {
     .container {
         padding: 15px;
     }
 
     header h1 {
-        font-size: 2.5rem;
+        font-size: clamp(2.2rem, 5vw, 2.8rem);
     }
 
     .game-stats {
         gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .stat {
         padding: 10px 15px;
-        min-width: 100px;
+        min-width: 120px;
     }
 
-    .current-number {
-        width: 180px;
-        height: 100px;
-        font-size: 0.9rem;
+    .stat-label {
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
     }
 
-    .bingo-card {
-        padding: 15px;
-    }
-
-    .letter {
-        padding: 10px;
-        font-size: 1.2rem;
-    }
-
-    .bingo-cell {
-        font-size: 1rem;
-    }
-
-    .phrases-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        max-height: 250px;
-        gap: 8px;
-    }
-
-    .phrase-item {
-        padding: 10px;
-        font-size: 0.8rem;
-        min-height: 50px;
+    .stat span:last-child {
+        font-size: clamp(1.3rem, 3vw, 1.6rem);
     }
 
     .game-controls {
-        gap: 10px;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .btn {
         padding: 10px 20px;
-        font-size: 0.9rem;
+        font-size: clamp(0.9rem, 2.2vw, 1rem);
+    }
+
+    .current-number {
+        width: min(85vw, 350px);
+        min-height: 85px;
+        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+        padding: 15px;
+    }
+
+    .bingo-card {
+        padding: 15px;
+        max-width: 450px;
+    }
+
+    .card-grid {
+        gap: 8px;
+    }
+
+    .letter {
+        padding: 12px;
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+    }
+
+    .bingo-cell {
+        font-size: clamp(0.65rem, 2vw, 0.85rem);
+        padding: 4px;
+        line-height: 1.2;
+    }
+
+    .called-numbers {
+        padding: 18px;
+    }
+
+    .called-numbers h3 {
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+    }
+
+    .called-number {
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        padding: 8px 12px;
+    }
+
+    .modal-content {
+        padding: 30px;
+        width: 90%;
+    }
+
+    .modal-content h2 {
+        font-size: clamp(2rem, 4vw, 2.3rem);
+    }
+
+    .modal-content p {
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    }
+
+    .custom-modal-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #customPhrasesTextarea {
+        font-size: clamp(0.95rem, 2vw, 1rem);
+    }
+}
+
+/* Small Desktops and Large Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 18px;
+    }
+
+    header h1 {
+        font-size: clamp(2.5rem, 4vw, 3rem);
+    }
+
+    .current-number {
+        width: min(80vw, 380px);
+        font-size: clamp(1rem, 2vw, 1.3rem);
+    }
+
+    .bingo-card {
+        max-width: 480px;
+    }
+
+    .bingo-cell {
+        font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+        padding: 5px;
+    }
+
+    .letter {
+        font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    }
+}
+
+/* Large Desktops */
+@media (min-width: 1025px) {
+    .bingo-cell {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+
+    .current-number {
+        font-size: 1.1rem;
+        width: min(70vw, 400px);
     }
 }
