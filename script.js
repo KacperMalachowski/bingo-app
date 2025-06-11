@@ -81,11 +81,11 @@ class BingoGame {
     initializeElements() {
         this.elements = {
             newGameBtn: document.getElementById('newGameBtn'),
-            callNumberBtn: document.getElementById('callNumberBtn'),
             resetStatsBtn: document.getElementById('resetStatsBtn'),
             customizeBtn: document.getElementById('customizeBtn'),
             currentNumber: document.getElementById('currentNumber'),
             calledNumbersList: document.getElementById('calledNumbersList'),
+            availablePhrasesList: document.getElementById('availablePhrasesList'),
             bingoGrid: document.getElementById('bingoGrid'),
             winModal: document.getElementById('winModal'),
             closeModal: document.getElementById('closeModal'),
@@ -107,7 +107,6 @@ class BingoGame {
 
     attachEventListeners() {
         this.elements.newGameBtn.addEventListener('click', () => this.startNewGame());
-        this.elements.callNumberBtn.addEventListener('click', () => this.callPhrase());
         this.elements.resetStatsBtn.addEventListener('click', () => this.resetStats());
         this.elements.customizeBtn.addEventListener('click', () => this.openCustomModal());
         this.elements.closeModal.addEventListener('click', () => this.closeWinModal());
@@ -165,6 +164,35 @@ class BingoGame {
         }
         
         this.renderCard();
+        this.renderAvailablePhrases();
+    }
+
+    renderAvailablePhrases() {
+        this.elements.availablePhrasesList.innerHTML = '';
+        
+        // Sort phrases: available first, then called
+        const sortedPhrases = [...this.availablePhrases, ...this.calledPhrases];
+        
+        sortedPhrases.forEach(phrase => {
+            const phraseElement = document.createElement('div');
+            phraseElement.className = 'phrase-item';
+            phraseElement.textContent = phrase;
+            phraseElement.title = phrase; // Tooltip
+            
+            const isCalled = this.calledPhrases.includes(phrase);
+            if (isCalled) {
+                phraseElement.classList.add('called');
+                phraseElement.textContent += ' ✓';
+            } else if (this.gameActive) {
+                phraseElement.addEventListener('click', () => this.callSpecificPhrase(phrase));
+            } else {
+                // Game not active, disable clicking
+                phraseElement.style.opacity = '0.5';
+                phraseElement.style.cursor = 'not-allowed';
+            }
+            
+            this.elements.availablePhrasesList.appendChild(phraseElement);
+        });
     }
 
     renderCard() {
@@ -214,12 +242,39 @@ class BingoGame {
         this.calledPhrases = [];
         this.availablePhrases = [...this.currentPhrases];
         
-        this.elements.currentNumber.textContent = 'Click "Call Phrase" to start';
+        this.elements.currentNumber.textContent = 'Click phrases below to call them';
         this.elements.calledNumbersList.innerHTML = '';
         this.generateNewCard();
         
-        this.elements.callNumberBtn.disabled = false;
-        this.showMessage('New game started! Good luck!');
+        this.showMessage('New game started! Click on phrases to call them!');
+    }
+
+    callSpecificPhrase(phrase) {
+        if (!this.gameActive || !this.availablePhrases.includes(phrase)) {
+            return;
+        }
+        
+        // Remove phrase from available and add to called
+        const phraseIndex = this.availablePhrases.indexOf(phrase);
+        this.availablePhrases.splice(phraseIndex, 1);
+        this.calledPhrases.push(phrase);
+        
+        this.elements.currentNumber.textContent = phrase;
+        
+        // Add to called phrases list
+        const phraseElement = document.createElement('div');
+        phraseElement.className = 'called-number';
+        phraseElement.textContent = phrase;
+        phraseElement.title = phrase; // Tooltip for long text
+        this.elements.calledNumbersList.appendChild(phraseElement);
+        
+        // Auto-mark if player has this phrase
+        this.autoMarkPhrase(phrase);
+        
+        // Re-render available phrases to update the display
+        this.renderAvailablePhrases();
+        
+        this.saveGameState();
     }
 
     callPhrase() {
@@ -299,7 +354,6 @@ class BingoGame {
 
     handleWin() {
         this.gameActive = false;
-        this.elements.callNumberBtn.disabled = true;
         
         // Update stats
         const stats = this.loadStats();
@@ -307,6 +361,9 @@ class BingoGame {
         stats.totalGames++;
         this.saveStats(stats);
         this.updateStatsDisplay();
+        
+        // Re-render available phrases to disable clicking
+        this.renderAvailablePhrases();
         
         // Show win modal
         setTimeout(() => {
@@ -460,8 +517,8 @@ class BingoGame {
             
             if (this.playerCard.length > 0) {
                 this.renderCard();
+                this.renderAvailablePhrases();
                 this.restoreCalledPhrases();
-                this.elements.callNumberBtn.disabled = !this.gameActive;
                 return true;
             }
         } catch (error) {
