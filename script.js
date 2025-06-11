@@ -1,6 +1,6 @@
 class BingoGame {
     constructor() {
-        // Default phrases - can be customized
+        // Default phrases - exactly 24 for the bingo card
         this.defaultPhrases = [
             "Someone mentions coffee", "A cat appears on camera", "Technical difficulties occur",
             "Someone says 'Can you hear me?'", "Background noise interrupts", "Someone types loudly",
@@ -9,16 +9,7 @@ class BingoGame {
             "A delivery arrives", "Someone mentions the weather", "Technology fails",
             "Someone wears pajama bottoms", "A doorbell rings", "Someone checks their phone",
             "Background TV sounds", "Someone eats during the call", "A construction sound",
-            "Someone says 'Sorry, I was on mute'", "Video freezes", "Someone waves goodbye",
-            "Echo on the line", "Let's circle back on that", "Can we take this offline?",
-            "I have a hard stop at...", "We're running out of time", "Let's parking lot this",
-            "Can you share your screen?", "I think there's a lag", "Let's sync up later",
-            "Can everyone go on mute?", "I'll follow up via email", "That's a great question",
-            "Let's table this for now", "I can't see the presentation", "Can you make it bigger?",
-            "We lost you there", "I have another meeting", "Let's schedule a follow-up",
-            "Can you hear me now?", "I think we lost John", "Can you unmute yourself?",
-            "Let's give them a minute", "Are you still there?", "Can everyone turn off video?",
-            "I'll send the recording", "Let's start without them"
+            "Someone says 'Sorry, I was on mute'", "Video freezes", "Someone waves goodbye"
         ];
         
         this.presetPhrases = {
@@ -85,7 +76,6 @@ class BingoGame {
             customizeBtn: document.getElementById('customizeBtn'),
             currentNumber: document.getElementById('currentNumber'),
             calledNumbersList: document.getElementById('calledNumbersList'),
-            availablePhrasesList: document.getElementById('availablePhrasesList'),
             bingoGrid: document.getElementById('bingoGrid'),
             winModal: document.getElementById('winModal'),
             closeModal: document.getElementById('closeModal'),
@@ -141,14 +131,14 @@ class BingoGame {
 
     generateNewCard() {
         if (this.currentPhrases.length < 24) {
-            alert('You need at least 24 phrases to generate a bingo card. Please add more phrases or use the default set.');
+            alert('You need exactly 24 phrases to generate a bingo card. Please add more phrases or use a preset.');
             return;
         }
         
         this.playerCard = [];
         const shuffledPhrases = [...this.currentPhrases].sort(() => Math.random() - 0.5);
         
-        // Generate 5x5 grid
+        // Generate 5x5 grid - use only first 24 phrases
         for (let row = 0; row < 5; row++) {
             const cardRow = [];
             for (let col = 0; col < 5; col++) {
@@ -164,35 +154,6 @@ class BingoGame {
         }
         
         this.renderCard();
-        this.renderAvailablePhrases();
-    }
-
-    renderAvailablePhrases() {
-        this.elements.availablePhrasesList.innerHTML = '';
-        
-        // Sort phrases: available first, then called
-        const sortedPhrases = [...this.availablePhrases, ...this.calledPhrases];
-        
-        sortedPhrases.forEach(phrase => {
-            const phraseElement = document.createElement('div');
-            phraseElement.className = 'phrase-item';
-            phraseElement.textContent = phrase;
-            phraseElement.title = phrase; // Tooltip
-            
-            const isCalled = this.calledPhrases.includes(phrase);
-            if (isCalled) {
-                phraseElement.classList.add('called');
-                phraseElement.textContent += ' ✓';
-            } else if (this.gameActive) {
-                phraseElement.addEventListener('click', () => this.callSpecificPhrase(phrase));
-            } else {
-                // Game not active, disable clicking
-                phraseElement.style.opacity = '0.5';
-                phraseElement.style.cursor = 'not-allowed';
-            }
-            
-            this.elements.availablePhrasesList.appendChild(phraseElement);
-        });
     }
 
     renderCard() {
@@ -227,95 +188,34 @@ class BingoGame {
         
         if (value === 'FREE') return;
         
-        // Only allow marking if the phrase has been called
+        // In meeting bingo, you can click any phrase when it happens
         if (!this.calledPhrases.includes(value)) {
-            this.showMessage('This phrase hasn\'t been called yet!');
-            return;
+            // Mark it as called
+            this.calledPhrases.push(value);
+            this.elements.currentNumber.textContent = value;
+            
+            // Add to called phrases list
+            const phraseElement = document.createElement('div');
+            phraseElement.className = 'called-number';
+            phraseElement.textContent = value;
+            phraseElement.title = value;
+            this.elements.calledNumbersList.appendChild(phraseElement);
         }
         
         cell.classList.toggle('marked');
         this.checkForWin();
+        this.saveGameState();
     }
 
     startNewGame() {
         this.gameActive = true;
         this.calledPhrases = [];
-        this.availablePhrases = [...this.currentPhrases];
         
-        this.elements.currentNumber.textContent = 'Click phrases below to call them';
+        this.elements.currentNumber.textContent = 'Click phrases on the bingo card when they happen!';
         this.elements.calledNumbersList.innerHTML = '';
         this.generateNewCard();
         
-        this.showMessage('New game started! Click on phrases to call them!');
-    }
-
-    callSpecificPhrase(phrase) {
-        if (!this.gameActive || !this.availablePhrases.includes(phrase)) {
-            return;
-        }
-        
-        // Remove phrase from available and add to called
-        const phraseIndex = this.availablePhrases.indexOf(phrase);
-        this.availablePhrases.splice(phraseIndex, 1);
-        this.calledPhrases.push(phrase);
-        
-        this.elements.currentNumber.textContent = phrase;
-        
-        // Add to called phrases list
-        const phraseElement = document.createElement('div');
-        phraseElement.className = 'called-number';
-        phraseElement.textContent = phrase;
-        phraseElement.title = phrase; // Tooltip for long text
-        this.elements.calledNumbersList.appendChild(phraseElement);
-        
-        // Auto-mark if player has this phrase
-        this.autoMarkPhrase(phrase);
-        
-        // Re-render available phrases to update the display
-        this.renderAvailablePhrases();
-        
-        this.saveGameState();
-    }
-
-    callPhrase() {
-        if (!this.gameActive || this.availablePhrases.length === 0) {
-            if (this.availablePhrases.length === 0) {
-                this.showMessage('All phrases have been called!');
-            }
-            return;
-        }
-        
-        const randomIndex = Math.floor(Math.random() * this.availablePhrases.length);
-        const calledPhrase = this.availablePhrases.splice(randomIndex, 1)[0];
-        
-        this.calledPhrases.push(calledPhrase);
-        this.elements.currentNumber.textContent = calledPhrase;
-        
-        // Add to called phrases list
-        const phraseElement = document.createElement('div');
-        phraseElement.className = 'called-number';
-        phraseElement.textContent = calledPhrase;
-        phraseElement.title = calledPhrase; // Tooltip for long text
-        this.elements.calledNumbersList.appendChild(phraseElement);
-        
-        // Auto-mark if player has this phrase
-        this.autoMarkPhrase(calledPhrase);
-        
-        this.saveGameState();
-    }
-
-    autoMarkPhrase(phrase) {
-        for (let row = 0; row < 5; row++) {
-            for (let col = 0; col < 5; col++) {
-                if (this.playerCard[row][col] === phrase) {
-                    const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-                    if (!cell.classList.contains('marked')) {
-                        cell.classList.add('marked');
-                        setTimeout(() => this.checkForWin(), 100);
-                    }
-                }
-            }
-        }
+        this.showMessage('New meeting bingo started! Click phrases when they happen!');
     }
 
     checkForWin() {
@@ -362,9 +262,6 @@ class BingoGame {
         this.saveStats(stats);
         this.updateStatsDisplay();
         
-        // Re-render available phrases to disable clicking
-        this.renderAvailablePhrases();
-        
         // Show win modal
         setTimeout(() => {
             this.elements.winModal.style.display = 'block';
@@ -391,7 +288,7 @@ class BingoGame {
     saveCustomPhrases() {
         const textareaValue = this.elements.customPhrasesTextarea.value.trim();
         if (!textareaValue) {
-            alert('Please enter at least 24 phrases, one per line.');
+            alert('Please enter exactly 24 phrases, one per line.');
             return;
         }
         
@@ -399,8 +296,8 @@ class BingoGame {
             .map(phrase => phrase.trim())
             .filter(phrase => phrase.length > 0);
             
-        if (phrases.length < 24) {
-            alert('You need at least 24 phrases to play bingo. Please add more phrases.');
+        if (phrases.length !== 24) {
+            alert('You need exactly 24 phrases for the bingo card (excluding the FREE center square).');
             return;
         }
         
@@ -434,8 +331,8 @@ class BingoGame {
         const phrases = this.elements.customPhrasesTextarea.value.split('\n')
             .map(phrase => phrase.trim())
             .filter(phrase => phrase.length > 0);
-        this.elements.phraseCount.textContent = `${phrases.length} phrases (minimum 24 needed)`;
-        this.elements.phraseCount.style.color = phrases.length >= 24 ? '#4CAF50' : '#f44336';
+        this.elements.phraseCount.textContent = `${phrases.length} phrases (exactly 24 needed)`;
+        this.elements.phraseCount.style.color = phrases.length === 24 ? '#4CAF50' : '#f44336';
     }
 
     loadCustomPhrases() {
@@ -487,7 +384,6 @@ class BingoGame {
     saveGameState() {
         const gameState = {
             calledPhrases: this.calledPhrases,
-            availablePhrases: this.availablePhrases,
             playerCard: this.playerCard,
             gameActive: this.gameActive,
             currentPhrases: this.currentPhrases,
@@ -510,14 +406,12 @@ class BingoGame {
             }
             
             this.calledPhrases = gameState.calledPhrases || [];
-            this.availablePhrases = gameState.availablePhrases || [];
             this.playerCard = gameState.playerCard || [];
             this.gameActive = gameState.gameActive || false;
             this.currentPhrases = gameState.currentPhrases || this.currentPhrases;
             
             if (this.playerCard.length > 0) {
                 this.renderCard();
-                this.renderAvailablePhrases();
                 this.restoreCalledPhrases();
                 return true;
             }
